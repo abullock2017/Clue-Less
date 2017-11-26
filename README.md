@@ -1,6 +1,11 @@
 # Clue-Less
 Clue-Less GUI code and images.
 
+## Get PyDev for Eclipse IDE
+In Eclipse, navigate to Help > Eclipse Marketplace...
+
+Search for PyDev, and install.
+
 ## Convert .ui files to .py files
 Navigate to the "pyuic5.bat" file within your Python folder (e.g., C:\Users\<id>\AppData\Local\Programs\Python\Python35-52\Lib\site-packages\PyQt5).
 
