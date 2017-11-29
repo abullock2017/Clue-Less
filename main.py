@@ -22,7 +22,7 @@ class Main(QWidget, Ui_ClueLess):
         QMainWindow.__init__(self, parent)
         self.ui = Ui_ClueLess()
         self.ui.setupUi(self)
-        '''self.ui.stackedWidget.setCurrentIndex(0)'''
+        self.ui.stackedWidget.setCurrentIndex(3)
         self.ui.mainMusicSlider.valueChanged[int].connect(self.changeVolume)
         self.ui.gameLobbyButton.clicked.connect(self.displayGameLobbyMenu)
         self.ui.mainOptionsButton.clicked.connect(self.mainOptionsButton_Clicked)
@@ -78,6 +78,7 @@ class Main(QWidget, Ui_ClueLess):
             self.ui.createGameMenu.hide()
         else:
             self.ui.joinGameMenu.hide()
+        self.ui.startGameButton.setVisible(True)
         self.ui.gameLobby.show()
         self.ui.startGameButton.clicked.connect(self.displayCharacterSelection)
         self.ui.cancelStartButton.clicked.connect(lambda: self.goBack(self.ui.gameLobby, self.ui.gameLobbyMenu))
@@ -94,7 +95,7 @@ class Main(QWidget, Ui_ClueLess):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     musicPlayer = QtMultimedia.QMediaPlayer()
-    musicSound = QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile("D:\Downloads\clue_music.wma"))
+    musicSound = QtMultimedia.QMediaContent(QtCore.QUrl.fromLocalFile("clue_music.wma"))
     musicPlayer.setMedia(musicSound)
     musicPlayer.setVolume(100)
     window = Main()
