@@ -18,11 +18,11 @@ from mainOptionsMenuWindow import Ui_MainOptionsMenuWindow
 
 class Main(QWidget, Ui_ClueLess):
     
-    def __init__(self, parent = None):
-        QMainWindow.__init__(self, parent)
+    def __init__(self):
+        QMainWindow.__init__(self)
         self.ui = Ui_ClueLess()
         self.ui.setupUi(self)
-        self.ui.stackedWidget.setCurrentIndex(3)
+        self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.mainMusicSlider.valueChanged[int].connect(self.changeVolume)
         self.ui.gameLobbyButton.clicked.connect(self.displayGameLobbyMenu)
         self.ui.mainOptionsButton.clicked.connect(self.mainOptionsButton_Clicked)
@@ -35,6 +35,7 @@ class Main(QWidget, Ui_ClueLess):
         showMenu.show()
     
     def displayGameLobbyMenu(self):
+        self.ui.stackedWidget.setCurrentIndex(1)
         self.ui.mainMenu.hide()
         self.ui.gameLobbyMenu.show()
         self.ui.createGameButton.clicked.connect(self.displayCreateGameMenu)
@@ -42,6 +43,7 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.gameLobbyBack.clicked.connect(lambda: self.goBack(self.ui.gameLobbyMenu, self.ui.mainMenu))
        
     def displayCreateGameMenu(self):
+        self.ui.stackedWidget.setCurrentIndex(2)
         self.ui.gameLobbyMenu.hide()
         self.ui.createGameMenu.show()
         hostName = socket.gethostname()
@@ -51,18 +53,20 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.cancelButton.clicked.connect(lambda: self.goBack(self.ui.createGameMenu, self.ui.gameLobbyMenu))
         
     def displayJoinGameMenu(self):
+        self.ui.stackedWidget.setCurrentIndex(4)
         self.ui.gameLobbyMenu.hide()
         self.ui.joinGameMenu.show()
         self.ui.joinGameButton_3.clicked.connect(lambda: self.displayGameLobby("newPlayer"))
         self.ui.cancelJoinButton.clicked.connect(lambda: self.goBack(self.ui.joinGameMenu, self.ui.gameLobbyMenu))
         
     def displayGameLobby(self, playerType):
+        
         if playerType == "gameHost":
             self.ui.playerOneNameSlot.setText(self.ui.gameHostName.text())
         else:
             if self.ui.playerTwoNameSlot.text() == "Waiting...":
                 self.ui.playerTwoNameSlot.setText(self.ui.newPlayerName.text())
-            elif self.ui.playerThreeNameSlot.text() == "Waiting...":
+            elif self.ui.playerThreeNameSlot.text() == "Waiting":
                 self.ui.playerThreeNameSlot.setText(self.ui.newPlayerName.text())
             elif self.ui.playerFourNameSlot.text() == "Waiting...":
                 self.ui.playerFourNameSlot.setText(self.ui.newPlayerName.text())
@@ -72,22 +76,24 @@ class Main(QWidget, Ui_ClueLess):
                 self.ui.playerSixNameSlot.setText(self.ui.newPlayerName.text())
             else:
                 '''Display some message, the game is full'''
-        if self.ui.playerThreeNameSlot != "Waiting...":
+        if self.ui.playerThreeNameSlot.text() != "Waiting...":
             self.ui.startGameButton.setEnabled(True)
         if playerType == "gameHost":
             self.ui.createGameMenu.hide()
         else:
             self.ui.joinGameMenu.hide()
-        self.ui.startGameButton.setVisible(True)
+        self.ui.stackedWidget.setCurrentIndex(3)
         self.ui.gameLobby.show()
         self.ui.startGameButton.clicked.connect(self.displayCharacterSelection)
         self.ui.cancelStartButton.clicked.connect(lambda: self.goBack(self.ui.gameLobby, self.ui.gameLobbyMenu))
     
     def displayCharacterSelection(self):
+        self.ui.stackedWidget.setCurrentIndex(5)
         self.ui.gameLobby.hide()
         self.ui.characterSelection.show()
     
     def mainOptionsButton_Clicked(self):
+        self.ui.stackedWidget.setCurrentIndex(7)
         self.ui.mainMenu.hide()
         self.ui.mainOptionsMenu.show()
         self.ui.mainOptionsBack.clicked.connect(lambda: self.goBack(self.ui.mainOptionsMenu, self.ui.mainMenu))
