@@ -35,6 +35,7 @@ class ServerNet(object):
         while True:
             try:
                 msg = (client.recv(1024).decode())  #message received from client
+                #print(msg)
                 #print(msg, ' received from ', address)
                 #This echos client message back to client (only sender), and is client action driven
                 client.send(msg.encode()) 

@@ -11,6 +11,13 @@ from PyQt5.QtWidgets import *
 from ClueLess import Ui_ClueLess
 import webbrowser
 
+from _thread import *
+import threading
+from servernet import ServerNet
+from clientnet import ClientNet
+
+port = 12346
+
 '''
 from mainMenuWindow import Ui_MainMenuWindow
 from gameLobbyMenuWindow import Ui_GameLobbyWindow
@@ -66,11 +73,38 @@ class Main(QWidget, Ui_ClueLess):
         
     def displayGameLobby(self, playerType):
         
-        #self.ui.playerThreeNameSlot.setText( "Person" )
+        self.ui.playerThreeNameSlot.setText( "Person" )
         
         if playerType == "gameHost":
             self.ui.playerOneNameSlot.setText(self.ui.gameHostName.text())
+            
+            startsocket = ServerNet(port)   #Instantiate server class
+            threading.Thread(target = startsocket.listen).start() #Server is now listening for connection requests
+            print("server created")
+            
+            '''
+            while True:
+                massmsg = input("MSG to all clients: ")   # Need to verify valid IP address?
+                startsocket.sendmsgtoclients(massmsg)
+            '''
+            
         else:
+            
+            
+            #host = input("Please enter IP address: ")   #This get server IP from user
+            host = self.ui.gameIPInput.text()
+            clientconnection = ClientNet(host)          #Established socket to server
+            print("client created")
+            clientconnection.sendmsg("hello")
+            
+            '''
+            while True:
+                message = input("Please enter message to server: ")
+                if  (message == 'end'):
+                    break
+                clientconnection.sendmsg(message)
+            '''
+            
             if self.ui.playerTwoNameSlot.text() == "Waiting...":
                 self.ui.playerTwoNameSlot.setText(self.ui.newPlayerName.text())
             elif self.ui.playerThreeNameSlot.text() == "Waiting...":
@@ -111,6 +145,9 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.mainOptionsMenu.show()
         self.ui.mainOptionsBack.clicked.connect(lambda: self.goBack(self.ui.mainOptionsMenu, self.ui.mainMenu))
        
+    def closeEvent(self, *args, **kwargs):
+        return QWidget.closeEvent(self, *args, **kwargs)
+    
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     musicPlayer = QtMultimedia.QMediaPlayer()
@@ -119,5 +156,5 @@ if __name__ == '__main__':
     musicPlayer.setVolume(100)
     musicPlayer.play()  
     window = Main()
-    window.show()
+    window.show()    
     sys.exit(app.exec_())

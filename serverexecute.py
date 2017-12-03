@@ -25,7 +25,7 @@ if __name__ == "__main__":
     while True:
         massmsg = input("MSG to all clients: ")   # Need to verify valid IP address?
         startsocket.sendmsgtoclients(massmsg)
-    
+
 
 
 
