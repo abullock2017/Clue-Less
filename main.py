@@ -146,6 +146,8 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.mainOptionsBack.clicked.connect(lambda: self.goBack(self.ui.mainOptionsMenu, self.ui.mainMenu))
        
     def closeEvent(self, *args, **kwargs):
+        startsocket.terminate()
+        clientconnection.terminate()
         return QWidget.closeEvent(self, *args, **kwargs)
     
 if __name__ == '__main__':
