@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SuggestionDialog</class>
+ <widget class="QDialog" name="SuggestionDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Make a Suggestion</string>
+  </property>
+  <widget class="QDialogButtonBox" name="suggestionButtonBox">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>240</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+   <property name="centerButtons">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="characterSuggestion">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>60</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Select a Character...</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mrs. White</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Miss Scarlet</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Colonel Mustard</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Professor Plum</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mrs. Peacock</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Mr. Green</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="weaponSuggestion">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>120</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Select a Weapon...</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Candlestick</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Revolver</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Wrench</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Rope</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Knife</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lead Pipe</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="roomSuggestion">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>180</y>
+     <width>261</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Select a Room...</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Conservatory</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Study</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Billiard Room</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Dining Room</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Kitchen</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Library</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Hall</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Lounge</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Ballroom</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>suggestionButtonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>SuggestionDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>suggestionButtonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SuggestionDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
