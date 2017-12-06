@@ -10,6 +10,7 @@ import ipgetter
 from PyQt5 import QtWidgets, QtMultimedia, QtCore
 from PyQt5.QtWidgets import *
 from ClueLess import Ui_ClueLess
+from GameBoard import Ui_GameBoard
 from SuggestionDialog import Ui_SuggestionDialog
 import webbrowser
 
@@ -20,7 +21,7 @@ from clientnet import ClientNet
 
 port = 12346
 
-class Main(QWidget, Ui_ClueLess):
+class Main(QWidget, Ui_ClueLess, Ui_GameBoard):
     
     def __init__(self):
         QMainWindow.__init__(self)
@@ -60,61 +61,56 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.cancelButton.clicked.connect(lambda: self.goBack(self.ui.createGameMenu, self.ui.gameLobbyMenu))
         
     def displayJoinGameMenu(self):
-        self.ui.stackedWidget.setCurrentIndex(4)
+        self.ui.stackedWidget.setCurrentIndex(3)
         self.ui.gameLobbyMenu.hide()
         self.ui.joinGameMenu.show()
         self.ui.joinGameButton_3.clicked.connect(lambda: self.displayGameLobby("newPlayer"))
         self.ui.cancelJoinButton.clicked.connect(lambda: self.goBack(self.ui.joinGameMenu, self.ui.gameLobbyMenu))
         
     def displayGameLobby(self, playerType):
+        
+        #self.ui.playerThreeNameSlot.setText("Person")
+        
         if playerType == "gameHost":
-            self.ui.playerOneNameSlot.setText(self.ui.gameHostName.text())
-            
-            startsocket = ServerNet(port) #Instantiate server class
+            #self.ui.playerOneNameSlot.setText(self.ui.gameHostName.text())
+            startsocket = ServerNet(port, self.ui.gameHostName.text()) #Instantiate server class
             threading.Thread(target = startsocket.listen).start() # Server is now listening
-            print("server created")
+            startsocket.show()
 			
-            '''
-			while True:
-				massmsg = input("MSG to all clients: ") # Need to verify valid IP address?
-				startsocket.sendmsgtoclients(massmsg)
-			'''
         else:
+            self.playertype = "newPlayer"
 			#host = input("Please enter IP address: ") #This get server IP from user
             host = self.ui.gameIPInput.text()
-            clientconnection = ClientNet(host) #Established socket to server
+            clientconnection = ClientNet(host, self.ui.newPlayerName.text()) #Established socket to server
+            clientconnection.show()
             print("client created")
-            clientconnection.sendmsg("hello")
+            #clientconnection.sendmsg("hello")
             
-            '''
-            while True:
-                message = input("Please enter message to server: ")
-                if  (message == 'end'):
-                    break
-                clientconnection.sendmsg(message)
-            '''
-            if self.ui.playerTwoNameSlot.text() == "Waiting...":
-                self.ui.playerTwoNameSlot.setText(self.ui.newPlayerName.text())
-            elif self.ui.playerThreeNameSlot.text() == "Waiting...":
-                self.ui.playerThreeNameSlot.setText(self.ui.newPlayerName.text())
-            elif self.ui.playerFourNameSlot.text() == "Waiting...":
-                self.ui.playerFourNameSlot.setText(self.ui.newPlayerName.text())
-            elif self.ui.playerFiveNameSlot.text() == "Waiting...":
-                self.ui.playerFiveNameSlot.setText(self.ui.newPlayerName.text())
-            elif self.ui.playerSixNameSlot.text() == "Waiting...":
-                self.ui.playerSixNameSlot.setText(self.ui.newPlayerName.text())
-            else:
-                '''Display some message, the game is full'''
-        if self.ui.playerThreeNameSlot.text() != "Waiting...":
-            self.ui.startGameButton.setEnabled(True)
+        #    if self.ui.playerTwoNameSlot.text() == "Waiting...":
+        #        self.ui.playerTwoNameSlot.setText(self.ui.newPlayerName.text())
+        #    elif self.ui.playerThreeNameSlot.text() == "Waiting...":
+        #        self.ui.playerThreeNameSlot.setText(self.ui.newPlayerName.text())
+        #    elif self.ui.playerFourNameSlot.text() == "Waiting...":
+        #        self.ui.playerFourNameSlot.setText(self.ui.newPlayerName.text())
+        #    elif self.ui.playerFiveNameSlot.text() == "Waiting...":
+        #        self.ui.playerFiveNameSlot.setText(self.ui.newPlayerName.text())
+        #    elif self.ui.playerSixNameSlot.text() == "Waiting...":
+        #        self.ui.playerSixNameSlot.setText(self.ui.newPlayerName.text())
+        #    else:
+        #        '''Display some message, the game is full'''
+        #if self.ui.playerThreeNameSlot.text() != "Waiting...":
+        #    self.ui.startGameButton.setEnabled(True)
         if playerType == "gameHost":
             self.ui.createGameMenu.hide()
         else:
             self.ui.joinGameMenu.hide()
-        self.ui.stackedWidget.setCurrentIndex(3)
-        self.ui.gameLobby.show()
-        self.ui.startGameButton.clicked.connect(self.displayCharacterSelection)
-        self.ui.cancelStartButton.clicked.connect(lambda: self.goBack(self.ui.gameLobby, self.ui.gameLobbyMenu))
+        #self.ui.stackedWidget.setCurrentIndex(3)
+        #self.ui.gameLobby.show()
+        #self.ui.startGameButton.clicked.connect(self.displayCharacterSelection)
+        #self.ui.cancelStartButton.clicked.connect(lambda: self.goBack(self.ui.gameLobby, self.ui.gameLobbyMenu))
+    
+        #self.ui.gameLobby.hide()
+        
     
     def displayCharacterSelection(self):
         self.ui.stackedWidget.setCurrentIndex(5)
@@ -123,15 +119,9 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.continueButton.clicked.connect(self.displayGameBoard)
         
     def displayGameBoard(self):
-        self.ui.stackedWidget.setCurrentIndex(6)
+        #self.ui.stackedWidget.setCurrentIndex(6)
         self.ui.characterSelection.hide()
-        self.ui.gameBoard.show()
-        self.ui.makeSuggestionButton.clicked.connect(self.makeSuggestion)
-	
-    def makeSuggestion(self):
-        self.suggestion = Ui_SuggestionDialog()()
-        self.suggestion.setupUi(self)
-        '''Need to research how to display dialog window'''
+        
     
     def mainOptionsButton_Clicked(self):
         self.ui.stackedWidget.setCurrentIndex(7)
@@ -139,10 +129,6 @@ class Main(QWidget, Ui_ClueLess):
         self.ui.mainOptionsMenu.show()
         self.ui.mainOptionsBack.clicked.connect(lambda: self.goBack(self.ui.mainOptionsMenu, self.ui.mainMenu))
         
-    def closeEvent(self, *args, **kwargs):
-        startsocket.terminate()
-        clientconnection.terminate()
-        return QWidget.closeEvent(self, *args, **kwargs)
 		
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
