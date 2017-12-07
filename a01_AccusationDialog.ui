@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SuggestionDialog</class>
- <widget class="QDialog" name="SuggestionDialog">
+ <class>AccusationDialog</class>
+ <widget class="QDialog" name="AccusationDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Make a Suggestion</string>
+   <string>Make an Accusation</string>
   </property>
-  <widget class="QDialogButtonBox" name="suggestionButtonBox">
+  <widget class="QDialogButtonBox" name="accusationButtonBox">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>230</y>
+     <y>240</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -32,11 +32,11 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QComboBox" name="characterSuggestion">
+  <widget class="QComboBox" name="characterAccusation">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>50</y>
+     <y>60</y>
      <width>261</width>
      <height>31</height>
     </rect>
@@ -77,11 +77,11 @@
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="weaponSuggestion">
+  <widget class="QComboBox" name="weaponAccusation">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>110</y>
+     <y>120</y>
      <width>261</width>
      <height>31</height>
     </rect>
@@ -122,11 +122,11 @@
     </property>
    </item>
   </widget>
-  <widget class="QComboBox" name="roomSuggestion">
+  <widget class="QComboBox" name="roomAccusation">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>170</y>
+     <y>180</y>
      <width>261</width>
      <height>31</height>
     </rect>
@@ -186,9 +186,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>suggestionButtonBox</sender>
+   <sender>accusationButtonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SuggestionDialog</receiver>
+   <receiver>AccusationDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -202,9 +202,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>suggestionButtonBox</sender>
+   <sender>accusationButtonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SuggestionDialog</receiver>
+   <receiver>AccusationDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
