@@ -74,7 +74,7 @@ class ServerNet(QWidget, Ui_GameBoard):
 	        self.board.playerSixNameSlot.setText( name ) 
 
         players = "Join" + self.board.playerOneNameSlot.text() + "," + self.board.playerTwoNameSlot.text() + "," + self.board.playerThreeNameSlot.text() + "," + self.board.playerFourNameSlot.text() + "," + self.board.playerFiveNameSlot.text() + "," + self.board.playerSixNameSlot.text()
-        self.sendmsg( players )
+        self.sendmsgtoclients( players )
 
         '''NEEDS TO UPDATE BACKEND!!!'''
 	
