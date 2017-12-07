@@ -109,31 +109,32 @@ class ServerNet(QWidget, Ui_GameBoard):
         
         '''Connect ALL the Buttons!!!'''
         #Rooms
-        self.board.study.clicked.connect(self.moveRoom())
-        self.board.hall.clicked.connect(self.moveRoom())
-        self.board.hallwayStudyHall.clicked.connect(self.moveRoom())
-        self.board.lounge.clicked.connect(self.moveRoom())
-        self.board.hallwayHallLounge.clicked.connect(self.moveRoom())
-        self.board.library.clicked.connect(self.moveRoom())
-        self.board.billiardRoom.clicked.connect(self.moveRoom())
-        self.board.diningrRoom.clicked.connect(self.moveRoom())
-        self.board.conservatory.clicked.connect(self.moveRoom())
-        self.board.kitchen.clicked.connect(self.moveRoom())
-        self.board.hallwayStudyLibrary.clicked.connect(self.moveRoom())
-        self.board.hallwaysHallBilliardRoom.clicked.connect(self.moveRoom())
-        self.board.hallwayLoungeDiningRoom.clicked.connect(self.moveRoom())
-        self.board.hallwayLibraryConservatory.clicked.connect(self.moveRoom())
-        self.board.hallwayBilliardRoomBallroom.clicked.connect(self.moveRoom())
-        self.board.hallwayDiningRoomKitchen.clicked.connect(self.moveRoom())
-        self.board.hallwayLibraryBilliardRoom.clicked.connect(self.moveRoom())
-        self.board.hallwayBilliardRoomDiningRoom.clicked.connect(self.moveRoom())
-        self.board.hallwayConservatoryBallroom.clicked.connect(self.moveRoom())
-        self.board.hallwayBallroomKitcchen.clicked.connect(self.moveRoom())
+        self.board.study.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hall.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayStudyHall.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.lounge.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayHallLounge.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.library.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.billiardRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.diningRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.conservatory.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.kitchen.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayStudyLibrary.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayHallBilliardRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayLoungeDiningRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayLibraryConservatory.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayBilliardRoomBallroom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayDiningRoomKitchen.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayLibraryBilliardRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayBilliardRoomDiningRoom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayConservatoryBallroom.clicked.connect(lambda: self.moveRoom("msg"))
+        self.board.hallwayBallroomKitchen.clicked.connect(lambda: self.moveRoom("msg"))
         # Other Buttons
-        self.boardgame.makeSuggestionButton.clicked.connect(self.makeSuggestion)
-        self.boardgame.leaveGameButton.clicked.connect(self.leaveGame)
-        self.boardgame.inGameOptionsButton.clicked.connect(self.options)
-        self.boardgame.makeAccusationButton.clicked.connect(self.makeAccusations)
+        print("after room buttons")
+        self.board.makeSuggestionButton.clicked.connect(lambda: self.makeSuggestion)
+        self.board.leaveGameButton.clicked.connect(lambda: self.leaveGame)
+        self.board.inGameOptionsButton.clicked.connect(lambda: self.options)
+        self.board.makeAccusationButton.clicked.connect(lambda: self.makeAccusations)
 
 
     def options(self):
@@ -148,10 +149,10 @@ class ServerNet(QWidget, Ui_GameBoard):
     def makeSuggestion(self, incomingmsg):
         '''To Do'''    
 
-    def moveRoom(self, incomingmsg)
+    def moveRoom(self, incomingmsg):
         '''To Do'''
 
-    def nextTurn(self, incomingmsg)
+    def nextTurn(self, incomingmsg):
         '''To Do'''
 
         
