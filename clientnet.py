@@ -5,56 +5,201 @@
 import socket
 from _thread import *
 import threading
+from PyQt5 import QtWidgets, QtMultimedia, QtCore
+from PyQt5.QtWidgets import *
+from GameBoard import Ui_GameBoard
 
-class ClientNet(object):
+class ClientNet(QWidget, Ui_GameBoard):
 
     clntsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)         # Create a socket object
+    playerNumber = 2
     
-    def __init__(self, ipaddress):
+    def __init__(self, ipaddress, playerName):
         self.ipaddress = ipaddress
         self.port = 12346  # this is static since we are FWDing to this port
+        QMainWindow.__init__(self)
+        self.boardgame = Ui_GameBoard()
+        self.boardgame.setupUi(self)
+	
+        self.playerName = playerName
         
         try:
             self.clntsock.connect((ipaddress, self.port))
-            #print("Hello, client connect requested")
             threading.Thread(target = self.listen).start()
             
         except:
             print('Error connecting to server')
             self.clntsock.close()
             return False
+
+        msg = "Join" + playerName
+        self.sendmsg(msg)
+        self.boardgame.stackedWidget.setCurrentIndex(0)
+        self.boardgame.gameLobby.show()
+        
+        self.boardgame.startGameButton.clicked.connect(self.displayCharacterSelection)
+        
+    def displayCharacterSelection(self):
+        self.boardgame.stackedWidget.setCurrentIndex(1)
+        self.boardgame.gameLobby.hide()
+        self.boardgame.characterSelection.show()
+
+        '''Connect Character Buttons'''
+        self.boardgame.scarlett.clicked.connect(lambda: self.selectCharacterMSG("scarlett"))
+        self.boardgame.mustard.clicked.connect(lambda: self.selectCharacterMSG("mustard"))
+        self.boardgame.white.clicked.connect(lambda: self.selectCharacterMSG("white"))
+        self.boardgame.green.clicked.connect(lambda: self.selectCharacterMSG("green"))
+        self.boardgame.peacock.clicked.connect(lambda: self.selectCharacterMSG("peacock"))
+        self.boardgame.plum.clicked.connect(lambda: self.selectCharacterMSG("plum"))
+
+        self.boardgame.continueButton.clicked.connect(self.displayGameBoard)
+
+    def selectCharacterMSG(self, character):
+        msg = self.playerNumber + "Char" + character
+        self.sendmsg(msg)
+        self.boardgame.continueButton.setEnabled(True)
+
+
+    def displayGameBoard(self):
+        self.boardgame.stackedWidget.setCurrentIndex(2)
+        self.boardgame.characterSelection.hide()
+        self.boardgame.gameboard.show()
+        
+        '''Connect ALL the Buttons!!!'''
+        #Rooms
+        self.boardgame.study.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hall.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayStudyHall.clicked.connect(self.moveRoomMSG())
+        self.boardgame.lounge.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayHallLounge.clicked.connect(self.moveRoomMSG())
+        self.boardgame.library.clicked.connect(self.moveRoomMSG())
+        self.boardgame.billiardRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.diningrRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.conservatory.clicked.connect(self.moveRoomMSG())
+        self.boardgame.kitchen.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayStudyLibrary.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwaysHallBilliardRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayLoungeDiningRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayLibraryConservatory.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayBilliardRoomBallroom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayDiningRoomKitchen.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayLibraryBilliardRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayBilliardRoomDiningRoom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayConservatoryBallroom.clicked.connect(self.moveRoomMSG())
+        self.boardgame.hallwayBallroomKitcchen.clicked.connect(self.moveRoomMSG())
+        # Other Buttons
+        self.boardgame.makeSuggestionButton.clicked.connect(self.makeSuggestionMSG)
+        self.boardgame.leaveGameButton.clicked.connect(self.leaveGameMSG)
+        self.boardgame.inGameOptionsButton.clicked.connect(self.options)
+        self.boardgame.makeAccusationButton.clicked.connect(self.makeAccusationMSG)
+
+    def entTurnMSG(self):
+        '''To Do'''
+
+    def options(self):
+        '''To Do'''
+
+    def leaveGameMSG(self):
+        '''To Do'''
+
+    def makeAccusationMSG(self):
+        '''To Do'''    
+
+    def makeSuggestionMSG(self):
+        '''To Do'''        
+
+        
+    def moveRoomMSG(self, room):
+        '''To Do'''
+
         
     def sendmsg(self, outMSG):
         encodedMSG = outMSG
         self.clntsock.send(encodedMSG.encode())
 
     def listen(self):
-        # Messages: 1) Move; 2) Suggest; 3) Accuse; 4) Ask to show card; 5) Display show card
-        
+
+        self.boardgame.playerOneNameSlot.setText("Something")
         while True:
             try:
-                incomingMSG = self.clntsock.recv(1024).decode()
+                incomingMSG = (self.clntsock.recv(1024).decode())
                 print(incomingMSG, " received from ", self.ipaddress)
-                #Here we print the message received, in clueless game, we can
-                #Call method in client or server and send message
                 
-                if incomingMSG[0] == '1':
-                    # Here I should client move method. 
-                    print('Move player# ', incomingMSG[1], 'in ', incomingMSG[2], ' direction.')
+                if incomingMSG[0:4] == "Join":
+                    self.setPlayerNames( incomingMSG )    
+                if incomingMSG[0:4] == "Char":
+                    self.setCharacters( incomingMSG )            
+                if incomingMSG[0:4] == "Move":
+                    self.moveRooms(incomingMSG)
+
+
+
             except:
                 print('Lost connection to server')
                 self.clntsock.close()
                 return False
         self.clntsock.close()
 
-    def clientmove(self, player, direction):
-        encodeMSG = "1", player, direction
-        sendmsg(encodeMSG)
+    def accusation(self, incomingmsg):
+        '''To Do'''
+
+    def suggestion(self, incomingmsg):
+        '''To Do'''
+
+    def leaveGame(self, incomingmsg):
+        '''To Do'''
+
+
+    def moveRooms(self, incomingmsg):
+        '''To do'''
+
+    def setCharacters(self, incomingmsg):
+
+    	msg = incomingmsg[4:]
+    	names = msg.split(',')
+    
+    	self.boardgame.scarlett.setEnabled(True)
+    	self.boardgame.mustard.setEnabled(True)
+    	self.boardgame.white.setEnabled(True)
+    	self.boardgame.green.setEnabled(True)
+    	self.boardgame.peacock.setEnabled(True)
+    	self.boardgame.plum.setEnabled(True)
+    
+    	for name in msg:
+    	    if name == "scarlett":
+                self.boardgame.scarlett.setEnabled(False)
+    	    elif name == "mustard":
+                self.boardgame.mustard.setEnabled(False)
+    	    elif name == "white":
+                self.boardgame.white.setEnabled(False)
+    	    elif name == "green":
+                self.boardgame.green.setEnabled(False)
+    	    elif name == "peacock":
+                self.boardgame.peacock.setEnabled(False)
+    	    elif name == "plum":
+                self.boardgame.plum.setEnabled(False)
+
+    def closeEvent(self, *args, **kwargs):
+        self.clntsocket.close()
+        return QWidget.closeEvent(self, *args, **kwargs)
+
         
-    def clientsuggest(self, player, person, weapon, room):
-        encodeMSG = "2", player, person, weapon, room
-        sendmsg(encodeMSG)
+    def setPlayerNames(self, incomingmsg):
         
-    def clientaccuse(self, player, person, weapon, room):
-        encodeMSG = "3", player, person, weapon, room
-        sendmsg(encodeMSG)
+        msg = incomingmsg[4:]
+        names = msg.split(',')
+        
+        self.boardgame.playerOneNameSlot.setText(names[0])
+        self.boardgame.playerTwoNameSlot.setText(names[1])
+        self.boardgame.playerThreeNameSlot.setText(names[2])
+        self.boardgame.playerFourNameSlot.setText(names[3])
+        self.boardgame.playerFiveNameSlot.setText(names[4])
+        self.boardgame.playerSixNameSlot.setText(names[5])
+        
+        i = 0
+        for name in names:
+            if name == self.playerName:
+                self.playerNumber = i
+            i = i + 1
+    
+
