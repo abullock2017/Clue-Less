@@ -66,7 +66,7 @@ class Main(QWidget, Ui_ClueLess, Ui_GameBoard):
         self.ui.joinGameMenu.show()
         self.ui.joinGameButton_3.clicked.connect(lambda: self.displayGameLobby("newPlayer"))
         self.ui.cancelJoinButton.clicked.connect(lambda: self.goBack(self.ui.joinGameMenu, self.ui.gameLobbyMenu))
-        
+    
     def displayGameLobby(self, playerType):
         
         if playerType == "gameHost":
