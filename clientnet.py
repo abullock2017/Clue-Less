@@ -119,11 +119,13 @@ class ClientNet(QWidget, Ui_GameBoard):
 
     def listen(self):
 
-        self.boardgame.playerOneNameSlot.setText("Something")
+        #self.boardgame.playerOneNameSlot.setText("Something")
         while True:
             try:
                 incomingMSG = (self.clntsock.recv(1024).decode())
-                print(incomingMSG, " received from ", self.ipaddress)
+                #print(incomingMSG, " received from ", self.ipaddress)
+                if incomingMSG != "":
+                    print(incomingMSG)
                 
                 if incomingMSG[0:4] == "Join":
                     self.setPlayerNames( incomingMSG )    

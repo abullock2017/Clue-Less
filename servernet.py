@@ -45,7 +45,7 @@ class ServerNet(QWidget, Ui_GameBoard):
             try:
                 msg = client.recv(1024).decode()  #message received from client
 
-                if msg[0:5] == "Join":
+                if msg[0:4] == "Join":
                     self.newPlayerJoin(msg)
 
                 if msg[1:6] == "Char":
