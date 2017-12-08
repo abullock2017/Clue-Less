@@ -164,4 +164,4 @@ class ServerNet(QWidget, Ui_GameBoard):
     def sendmsgtoclients(self, msg):
         with self.clients_lock:
             for clt in self.clients:
-                clt.sendall(msg)
+                clt.sendall(msg.encode())
