@@ -14,6 +14,7 @@ from CharacterN import Character
 from copy import copy
 from Player import Player
 from TurnKeeper import TurnKeeper
+from _overlapped import NULL
 
 def connect_locations(location1, location2):   
     location1.add_connecting_locations(location2)
@@ -119,16 +120,13 @@ class ServerNet(QWidget, Ui_GameBoard):
         ScarlettStart.add_connecting_locations(hallway2)
         MustardStart.add_connecting_locations(hallway5)    
          
-        mustard = Character(CharacterEnum.ColonelMustard, MustardStart)
-        plum = Character(CharacterEnum.ProfessorPlum, PlumStart)
-        scarlett = Character(CharacterEnum.MissScarlet, ScarlettStart)
-        green =  Character(CharacterEnum.MrGreen, GreenStart)
-        white = Character(CharacterEnum.MrsWhite, WhiteStart)
-        Peacock = Character(CharacterEnum.MrsPeacock, PeacockStart)
- 
-        possibleCharacters = [mustard, plum, scarlet, green, white, Peacock] 
-        characterList = copy(possibleCharacters) 
-        playerList =[]   
+        self.character.mustard = Character(CharacterEnum.ColonelMustard, MustardStart)
+        self.character.plum = Character(CharacterEnum.ProfessorPlum, PlumStart)
+        self.character.scarlett = Character(CharacterEnum.MissScarlet, ScarlettStart)
+        self.character.green =  Character(CharacterEnum.MrGreen, GreenStart)
+        self.character.white = Character(CharacterEnum.MrsWhite, WhiteStart)
+        self.character.Peacock = Character(CharacterEnum.MrsPeacock, PeacockStart)
+   
         
     def listen(self):
         self.svrsock.listen(6)                 # Now wait for client connection.
@@ -182,19 +180,19 @@ class ServerNet(QWidget, Ui_GameBoard):
         '''NEEDS TO UPDATE BACKEND!!!'''
 	
     def displayCharacterSelection(self):
-        player1 = Player(self.board.playerOneNameSlot.text())
-        player2 = Player(self.board.playerTwoNameSlot.text())
-        player3 = Player(self.board.playerThreeNameSlot.text())
-        player4 = Player(self.board.playerFourNameSlot.text())
-        player5 = Player(self.board.playerFiveNameSlot.text())
-        player6 = Player(self.board.playerSixNameSlot.text())
+        self.player1 = Player(self.board.playerOneNameSlot.text())
+        self.player2 = Player(self.board.playerTwoNameSlot.text())
+        self.player3 = Player(self.board.playerThreeNameSlot.text())
+        self.player4 = Player(self.board.playerFourNameSlot.text())
+        self.player5 = Player(self.board.playerFiveNameSlot.text())
+        self.player6 = Player(self.board.playerSixNameSlot.text())
         
-        playerList = [player1, player2, player3, player4, player5, player6]
+        playerList = [self.player1, self.player2, self.player3, self.player4, self.player5, self.player6]
         
-        turnKeeper = TurnKeeper()
+        self.turnKeeper = TurnKeeper()
         for player in playerList:
             if player.__str__ != "Waiting...":
-                TurnKeeper.add_player(player)
+                self.turnKeeper.add_player(player)
         
         self.board.stackedWidget.setCurrentIndex(1)
         self.board.gameLobby.hide()
@@ -215,25 +213,32 @@ class ServerNet(QWidget, Ui_GameBoard):
         playerNumber = incomingmsg[0]
         characterInput = incomingmsg[5:]
         
+        self.possibleCharacters = [self.character.mustard, self.character.plum, self.character.scarlet, self.character.green, self.character.white, self.character.Peacock] 
+       
+        playerlist = [self.player1, self.player2, self.player3, self.player4, self.player5, self.player6]
+       
         if characterInput in ['mustard']:
-            character = mustard
+            character = self.character.mustard
         elif characterInput in ['scarlett']:
-            character = scarlett
+            character = self.character.scarlett
         elif characterInput in ['plum']:
-            character = plum
+            character = self.character.plum
         elif characterInput in ['green']:
-            character = green
+            character = self.character.green
         elif characterInput in ['white']:
-            character = white
+            character = self.character.white
         elif characterInput in ['peacock']:
-            character = Peacock
+            character = self.character.Peacock
         else:
             print('Invalid Character Selected')
             character = NULL
-            
-        if character in possibleCharacters:
-            playerTurn.add_character(character)   
-            possibleCharacters.remove(character)
+        
+        '''Check this works'''
+        currentplayer = playerlist[playerNumber]
+        
+        if character in self.possibleCharacters:
+            currentplayer.add_character(character)   
+            self.possibleCharacters.remove(character)
             selection = True
         else:
             print('Character already selected')
