@@ -151,7 +151,7 @@ class ServerNet(QWidget, Ui_GameBoard):
                 if msg[0:4] == "Join":
                     self.newPlayerJoin(msg)
 
-                if msg[1:6] == "Char":
+                if msg[1:5] == "Char":
                     self.selectCharacter(msg)
                     
             
@@ -201,12 +201,12 @@ class ServerNet(QWidget, Ui_GameBoard):
         self.board.characterSelection.show()
 
         '''Connect Character Buttons'''
-        self.board.scarlett.clicked.connect(lambda: self.selectCharacter("1Charscarlett"))
-        self.board.mustard.clicked.connect(lambda: self.selectCharacter("1Charmustard"))
-        self.board.white.clicked.connect(lambda: self.selectCharacter("1Charwhite"))
-        self.board.green.clicked.connect(lambda: self.selectCharacter("1Chargreen"))
-        self.board.peacock.clicked.connect(lambda: self.selectCharacter("1Charpeacock"))
-        self.board.plum.clicked.connect(lambda: self.selectCharacter("1Charplum"))
+        self.board.scarlett.clicked.connect(lambda: self.selectCharacter("0Charscarlett"))
+        self.board.mustard.clicked.connect(lambda: self.selectCharacter("0Charmustard"))
+        self.board.white.clicked.connect(lambda: self.selectCharacter("0Charwhite"))
+        self.board.green.clicked.connect(lambda: self.selectCharacter("0Chargreen"))
+        self.board.peacock.clicked.connect(lambda: self.selectCharacter("0Charpeacock"))
+        self.board.plum.clicked.connect(lambda: self.selectCharacter("0Charplum"))
         
         self.board.continueButton.clicked.connect(self.displayGameBoard)
 
@@ -214,7 +214,7 @@ class ServerNet(QWidget, Ui_GameBoard):
         self.board.continueButton.setEnabled(True)
         playerNumber = int(incomingmsg[0])
         characterInput = incomingmsg[5:]
-        if playerNumber == 1:
+        if playerNumber == 0:
             self.myCharacter = characterInput.__str__()
 
         '''
@@ -250,17 +250,17 @@ class ServerNet(QWidget, Ui_GameBoard):
         '''Assign character to player, send all to clients'''
         '''Disable proper buttons'''
         if characterInput == "mustard":
-            self.characters[int(playerNumber)-1] = "mustard"
+            self.characters[int(playerNumber)] = "mustard"
         elif characterInput == "white":
-            self.characters[int(playerNumber)-1] = "white"
+            self.characters[int(playerNumber)] = "white"
         elif characterInput == "plum":
-            self.characters[int(playerNumber)-1] = "plum"
+            self.characters[int(playerNumber)] = "plum"
         elif characterInput == "peacock":
-            self.characters[int(playerNumber)-1] = "peacock"
+            self.characters[int(playerNumber)] = "peacock"
         elif characterInput == "scarlett":
-            self.characters[int(playerNumber)-1] = "scarlett"
+            self.characters[int(playerNumber)] = "scarlett"
         elif characterInput == "green":
-            self.characters[int(playerNumber)-1] = "green"
+            self.characters[int(playerNumber)] = "green"
         
         self.board.scarlett.setEnabled(True)
         self.board.mustard.setEnabled(True)
@@ -270,6 +270,7 @@ class ServerNet(QWidget, Ui_GameBoard):
         self.board.plum.setEnabled(True)
     
         for char in self.characters:
+            print(char)
             if char == "scarlett":
                 self.board.scarlett.setEnabled(False)
             elif char == "mustard":

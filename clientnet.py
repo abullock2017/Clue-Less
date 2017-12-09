@@ -57,11 +57,10 @@ class ClientNet(QWidget, Ui_GameBoard):
         self.boardgame.continueButton.clicked.connect(self.displayGameBoard)
 
     def selectCharacterMSG(self, character):
-        msg = self.playerNumber + "Char" + character
+        msg = self.playerNumber.__str__() + "Char" + character
         self.myCharacter = character
         self.sendmsg(msg)
         self.boardgame.continueButton.setEnabled(True)
-
 
     def displayGameBoard(self):
         self.boardgame.stackedWidget.setCurrentIndex(2)
